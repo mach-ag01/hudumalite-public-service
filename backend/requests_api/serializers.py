@@ -36,16 +36,62 @@ class RequestHistorySerializer(serializers.ModelSerializer):
         if not obj.changed_by: return 'System'
         return obj.changed_by.get_full_name() or obj.changed_by.username
 
+
 class ServiceRequestSerializer(serializers.ModelSerializer):
     citizen_name = serializers.SerializerMethodField()
     category_label = serializers.CharField(source='get_category_display', read_only=True)
     status_label = serializers.CharField(source='get_status_display', read_only=True)
     image_url = serializers.SerializerMethodField()
     history = RequestHistorySerializer(many=True, read_only=True)
+
     class Meta:
         model = ServiceRequest
-        fields = ('id', 'reference', 'citizen', 'citizen_name', 'title', 'category', 'category_label', 'location', 'description', 'image', 'image_url', 'status', 'status_label', 'staff_note', 'created_at', 'updated_at', 'resolved_at', 'history')
-        read_only_fields = ('id', 'reference', 'citizen', 'status', 'staff_note', 'created_at', 'updated_at', 'resolved_at', 'history')
+        fields = (
+            'id', 'reference', 'citizen', 'citizen_name',
+            'title', 'category', 'category_label', 'location',
+            'description', 'image', 'image_url', 'status',
+            'status_label', 'staff_note', 'created_at',
+            'updated_at', 'resolved_at', 'history'
+        )
+        read_only_fields = (
+            'id', 'reference', 'citizen', 'status', 'staff_note',
+            'created_at', 'updated_at', 'resolved_at', 'history'
+        )
+
+    def get_citizen_name(self, obj):
+        return obj.citizen.get_full_name() or obj.citizen.username
+
+    def get_image_url(self, obj):
+        if not obj.image:
+            return None
+
+        try:
+            url = obj.image.url
+        except (ValueError, OSError):
+            return None
+
+        request = self.context.get('request')
+        return request.build_absolute_uri(url) if request else url
+
+    def validate_image(self, value):
+        if not value:
+            return value
+
+        if value.size > 5 * 1024 * 1024:
+            raise serializers.ValidationError(
+                'Image must be 5 MB or smaller.'
+            )
+
+        content_type = getattr(value, 'content_type', None)
+        if content_type and content_type not in (
+            'image/jpeg', 'image/png', 'image/webp'
+        ):
+            raise serializers.ValidationError(
+                'Upload a JPG, PNG, or WebP image.'
+            )
+
+        return value
+
     def get_citizen_name(self, obj):
         return obj.citizen.get_full_name() or obj.citizen.username
 
