@@ -10,11 +10,23 @@ DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 if not DEBUG and SECRET_KEY == 'dev-only-change-this-secret-before-deployment':
     raise RuntimeError('Set a unique DJANGO_SECRET_KEY before running with DEBUG=False.')
 ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if h.strip()]
+
 INSTALLED_APPS = [
-    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
-    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',
-    'rest_framework', 'corsheaders', 'requests_api',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'cloudinary_storage',
+    'cloudinary',
+
+    'rest_framework',
+    'corsheaders',
+    'requests_api',
 ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware', 'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware', 'django.contrib.sessions.middleware.SessionMiddleware',
