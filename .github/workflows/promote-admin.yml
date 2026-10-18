@@ -1,1 +1,58 @@
 
+name: Promote HudumaLite Staff Account
+
+on: [workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  promote-staff:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DEBUG: "False"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Promote existing account
+        run: |
+          python manage.py shell <<'PY'
+          from django.contrib.auth import get_user_model
+
+          User = get_user_model()
+          matches = User.objects.filter(
+              username="ADMIN",
+              email="mach.ag026@gmail.com",
+          )
+
+          if matches.count() != 1:
+              raise SystemExit(
+                  "Expected exactly one matching account."
+              )
+
+          user = matches.get()
+          user.is_staff = True
+          user.save(update_fields=["is_staff"])
+
+          print(f"Updated {user.username}: is_staff={user.is_staff}")
+          PY
+
