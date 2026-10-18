@@ -48,10 +48,22 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'reference', 'citizen', 'status', 'staff_note', 'created_at', 'updated_at', 'resolved_at', 'history')
     def get_citizen_name(self, obj):
         return obj.citizen.get_full_name() or obj.citizen.username
-    def get_image_url(self, obj):
-        if not obj.image: return None
-        request = self.context.get('request')
-        return request.build_absolute_uri(obj.image.url) if request else obj.image.url
+
+def get_image_url(self, obj):
+    if not obj.image:
+        return None
+
+    request = self.context.get('request')
+    try:
+        url = obj.image.url
+    except (ValueError, OSError):
+        return None
+
+    if request:
+        return request.build_absolute_uri(url)
+
+    return url
+
     def validate_image(self, value):
         if value and value.size > 5 * 1024 * 1024:
             raise serializers.ValidationError('Image must be 5 MB or smaller.')
