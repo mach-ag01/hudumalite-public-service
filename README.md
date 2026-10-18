@@ -14,7 +14,34 @@ Built with **React, Vite, Django REST Framework, and PostgreSQL**, HudumaLite de
 The frontend is deployed on Vercel, and the Django API is hosted on Render.
 
 > **Note:** The backend root URL may return HTTP 404 because a homepage is not defined for the API. Use the health-check endpoint to check backend availability. The Render service may take time to wake up if it is on a free instance.
+> 
+## Assessment Requirements and Implementation
 
+HudumaLite was developed to address the Public Service Request System (Mini eCitizen-style) scenario.
+
+| Assessment requirement | Implementation |
+|---|---|
+| Citizen registration and login | Django REST Framework authentication with JWT |
+| Submit service requests | Request form with category, location, description, and optional image |
+| Admin dashboard | Staff-facing request management interface |
+| Status tracking | Pending → In Progress → Resolved |
+| Basic analytics | Request counts by status, including open and resolved cases |
+| Code quality and structure | Separate React frontend and Django backend |
+| UI/UX design | Responsive interface for citizen and staff workflows |
+| Documentation | README, setup instructions, API reference, and deployment guidance |
+| Bonus features | Cloudinary media integration, request history, filtering, and API security controls |
+
+### Suggested Evaluation Workflow
+
+1. Register a citizen account and sign in.
+2. Submit a service request with all required fields.
+3. Attach an optional image and verify its URL.
+4. Open the staff dashboard and locate the submitted request.
+5. Update its status from Pending to In Progress, then Resolved.
+6. Verify that the citizen can see the latest status.
+7. Review the analytics and confirm that the request counts reflect the updated status.
+
+The workflow should be evaluated using test accounts and fictional service-request data. Features and results should be confirmed against the deployed application.
 ---
 
 ## Table of Contents
