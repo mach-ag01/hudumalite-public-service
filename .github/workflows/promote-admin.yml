@@ -15,9 +15,10 @@ jobs:
         working-directory: backend
 
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      DEBUG: "False"
+      env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+  DEBUG: "False"
 
     steps:
       - name: Checkout repository
