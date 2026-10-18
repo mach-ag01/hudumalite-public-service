@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowRight, CheckCircle2, ClipboardList, Clock3, FilePlus2, Filter, MapPin, Search, TrendingUp } from 'lucide-react';
+import { ArrowRight, Check, CheckCircle2, ChevronDown, ClipboardList, Clock3, FilePlus2, Filter, Landmark, MapPin, Search, TrendingUp } from 'lucide-react';
 import { fmtDate } from '../constants';
 import { CategoryIcon, EmptyState, StatCard, StatusPill } from '../components/ui';
 function CitizenHome({user,items,onNew,onOpen}) {
