@@ -1,4 +1,4 @@
-import { Construction, Droplets, Lightbulb, Trash2, Waves, CircleHelp } from 'lucide-react';
+import { Construction, Droplets, Lightbulb, Landmark, Trash2, Waves, CircleHelp } from 'lucide-react';
 export const CATEGORIES = [
   { value:'roads', label:'Roads & potholes', icon:Construction, color:'orange' },
   { value:'water', label:'Water supply', icon:Droplets, color:'blue' },
