@@ -1,7 +1,8 @@
 
 name: Promote HudumaLite Staff Account
 
-on: [workflow_dispatch]
+'on':
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,10 +16,9 @@ jobs:
         working-directory: backend
 
     env:
-      env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-  DEBUG: "False"
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DEBUG: "False"
 
     steps:
       - name: Checkout repository
